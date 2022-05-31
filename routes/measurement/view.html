@@ -60,6 +60,7 @@
   <tr>
     <th>Дата</th>
     <th>Факт/Прогноз</th>
+    <th>Отработанное время (сут)</th>
     <th>Добыто жидкости за месяц (м^3)</th>
     <th>Базовая добыча жидкости за месяц (м^3)</th>
     <th>Дополнительная добыча жидкости, (м^3)</th>
@@ -67,8 +68,7 @@
     <th>Добыто нефти за месяц (м^3)</th>
     <th>Базовая добыча нефти за месяц (м^3)</th>
     <th>Дополнительная добыча нефти, (м^3)</th>
-    <th>Средний прирост дебита нефти, (м^3 / сут)</th>
-    <th>Отработанное время (сут)</th>
+    <th>Средний прирост дебита нефти, (м^3 / сут)</th>    
   </tr>
   {{range $row := .data}}
     <tr
@@ -82,6 +82,7 @@
     >      
       <td>{{DateMonthYearFormat $row.date}}</td>
       <td>{{$row.fact_prediction}}</td>
+      <td>{{NumTruncate $row.work 0}}</td>
       <td>{{NumTruncate $row.liquid 0}}</td>
       <td>{{NumTruncate $row.base_liquid 0}}</td>
       <td>{{NumTruncate $row.add_prod_liquid 0}}</td>
@@ -89,8 +90,7 @@
       <td>{{NumTruncate $row.oil 0}}</td>
       <td>{{NumTruncate $row.base_oil 0}}</td>
       <td>{{NumTruncate $row.add_prod_oil 0}}</td>
-      <td>{{NumTruncate $row.avg_inc_prod_oil 1}}</td>
-      <td>{{NumTruncate $row.work 0}}</td>
+      <td>{{NumTruncate $row.avg_inc_prod_oil 1}}</td>      
     </tr>
   {{end}}
 </table>
