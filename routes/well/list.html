@@ -1,0 +1,37 @@
+<style>
+  td {
+    padding: 0.25rem;
+  }
+</style>
+<h1 style="text-align: center;">Список скважин</h1>
+<table 
+  border="1" 
+  style="
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+  "
+>
+  <tr>
+    <th>Имя скважины (uwi)</th>
+    <th>Дата создания (project_date)</th>
+    <th>Тип скважины (well_type)</th>
+    <th>Тип скважины(сокращенно)</th>
+  </tr>
+  {{range $row := .data}}
+    <tr>      
+      <td>
+        <a href="/measurement/view/{{$row.id}}">
+          {{$row.uwi}}
+        </a>
+      </td>
+      <td>{{DateFormat $row.project_date}}</td>
+      <td>{{$row.well_type_name_ru}}</td>
+      <td>{{$row.well_type_name_short_ru}}</td>
+    </tr>
+  {{end}}
+</table>
+<br>
+{{range $pageIndex := .pages}}
+  <a href="http://localhost:3000/well/view/list/{{$pageIndex}}">{{$pageIndex}}</a> | 
+{{end}}

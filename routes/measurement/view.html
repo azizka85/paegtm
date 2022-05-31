@@ -1,0 +1,96 @@
+<style>
+  td, th {
+    padding: 0.5rem;
+  }
+  .notion {
+    width: 1rem;
+    height: 1rem;
+    margin: 0 1rem;
+  }
+  .gtm {
+    background-color: red;
+    color: white;
+  }
+  .no-gtm {
+    background-color: silver;
+  }
+  .has-last {
+    background-color: green;
+    color: white;
+  }
+</style>
+<h3 style="text-align: center;">
+  Скважина - 
+  <span style="color: blue;">{{.well.uwi}}</span> 
+  (дата создания - {{DateFormat .well.project_date}})
+</h3>
+<br>
+<div style="text-align: center;">
+  <a href="/well/view/list/">Список скважин</a>
+</div>
+<br>
+<div>
+  <div style="display: flex; flex-direction: row;">
+    {{if .gtm}}
+      <div class="notion gtm"></div> - ГТМ (
+        {{.gtm.type_name_short_ru}},  
+        начало {{DateFormat .gtm.dbeg}},
+        конец - {{DateFormat .gtm.dend}}
+      )    
+    {{else}}
+      <div class="notion no-gtm"></div> - для данной скважины мероприятия не проводились
+    {{end}}
+  </div>
+  <br>
+  {{if .hasLastDate}}
+  <div style="display: flex; flex-direction: row;">
+    <div class="notion has-last"></div> - Фактические данные до {{DateMonthYearFormat .lastDate}}
+  </div>
+  {{end}}
+</div>
+<br>
+<table 
+  border="1" 
+  style="
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+  "
+>
+  <tr>
+    <th>Дата</th>
+    <th>Факт/Прогноз</th>
+    <th>Добыто жидкости за месяц (м^3)</th>
+    <th>Базовая добыча жидкости за месяц (м^3)</th>
+    <th>Дополнительная добыча жидкости, (м^3)</th>
+    <th>Средний прирост дебита жидкости, (м^3 / сут)</th>
+    <th>Добыто нефти за месяц (м^3)</th>
+    <th>Базовая добыча нефти за месяц (м^3)</th>
+    <th>Дополнительная добыча нефти, (м^3)</th>
+    <th>Средний прирост дебита нефти, (м^3 / сут)</th>
+    <th>Отработанное время (сут)</th>
+  </tr>
+  {{range $row := .data}}
+    <tr
+      class="
+        {{if $row.is_gtm}}
+          gtm
+        {{else if $row.is_last}}
+          has-last
+        {{end}}        
+      "
+    >      
+      <td>{{DateMonthYearFormat $row.date}}</td>
+      <td>{{$row.fact_prediction}}</td>
+      <td>{{NumTruncate $row.liquid 0}}</td>
+      <td>{{NumTruncate $row.base_liquid 0}}</td>
+      <td>{{NumTruncate $row.add_prod_liquid 0}}</td>
+      <td>{{NumTruncate $row.avg_inc_prod_liquid 0}}</td>
+      <td>{{NumTruncate $row.oil 0}}</td>
+      <td>{{NumTruncate $row.base_oil 0}}</td>
+      <td>{{NumTruncate $row.add_prod_oil 0}}</td>
+      <td>{{NumTruncate $row.avg_inc_prod_oil 1}}</td>
+      <td>{{NumTruncate $row.work 0}}</td>
+    </tr>
+  {{end}}
+</table>
